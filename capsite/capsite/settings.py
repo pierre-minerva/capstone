@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'optalg.apps.OptalgConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
