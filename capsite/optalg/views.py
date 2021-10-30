@@ -13,7 +13,11 @@ def home(request):
 
 		content = functions.get_page(link)
 
-		algo_links = functions.get_all_links(content)
+		alg_links = functions.get_all_links(content)
+
+		functions.update_related_algs(alg_links)
+
+		related_algs = get_related_algs(alg_links)
 
 
 		return render(request, 'optalg/home.html',c)

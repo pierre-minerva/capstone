@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup as bs
 import requests
 
+
+#scrapes a web page
 def get_page(link):
 	url = link
 	if "http" or "https" not in url:
@@ -11,6 +13,8 @@ def get_page(link):
 
 	return content
 
+
+#finds and returns the wiki links for all algorithms in a wiki page
 def get_all_links(content):
 	soup = bs(content)
 
@@ -27,7 +31,8 @@ def get_all_links(content):
 	return processed_links
 
 
-def get_alg_page(wiki_url):
+#gets the basic information of an algorithm from a wiki url
+def get_alg_info(wiki_url):
 	content = get_page(wiki_url)
 
 	soup = bs(content)
@@ -41,7 +46,7 @@ def get_alg_page(wiki_url):
 	return name, desc, wiki_url
 
 
-
+#the class for the data structure representing a node for each algorithm
 class AlgNode:
 	def __init__(self, id, name, description, wiki_url):
 		#int
@@ -90,14 +95,14 @@ class AlgNode:
 #needs to be updated to method with static storage
 algnodes_lst = []
 
-
+#takes a list of wiki links of algorithms, and updates our data structure
 #horrendous complexity that needs to be updated
 def update_related_algs(wiki_urls):
 	related_algs = []
 
 	#creates new algnode objects if not existant yet
 	for url in wiki_urls:
-		name, desc, _ = get_alg_page(url)
+		name, desc, _ = get_alg_info(url)
 
 		alg_node_exists = False
 		for alg_node in algnodes_lst:
@@ -115,6 +120,7 @@ def update_related_algs(wiki_urls):
 		alg_node.add_related_algs(related_algs)
 
 
+#takes a list of wiki urls of algorithms, and returns related algorithms that might be improvements
 def get_related_algs(wiki_urls):
 	curr_algs = []
 	related_algs = []
