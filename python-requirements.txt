@@ -1,5 +1,5 @@
 wheel
-Django
+Django==3.2.7
 BeautifulSoup4
 requests
 mysqlclient
