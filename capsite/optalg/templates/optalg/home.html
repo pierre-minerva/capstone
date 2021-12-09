@@ -2,8 +2,13 @@
 {% block content %}
 	<h1>Pierre Alkubeh's OptAlg Capstone Project</h1>
 	<h2>Paste a link here:</h2>
-	<form method="post">{% csrf_token %}
+	<form action="/" method="POST">{% csrf_token %}
 		Link: <input type="text" name="link">
-		<input type="button" name="submit" value="Submit">
+		<input type="submit" name="submit" value="Submit">
 	</form>
+	<h2>Related Algs</h2>
+	{% for alg in related_algs %}
+	<p>{{alg}}</p>
+	{% endfor %}
+
 {% endblock content %}

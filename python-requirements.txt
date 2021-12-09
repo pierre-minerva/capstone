@@ -1,3 +1,7 @@
+wheel
 Django
 BeautifulSoup4
 requests
+mysqlclient
+networkx
+django-background-tasks

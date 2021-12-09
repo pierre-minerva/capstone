@@ -1,11 +1,13 @@
 from bs4 import BeautifulSoup as bs
 import requests
-
+import networkx as nx
+import time
+from optalg import models
 
 #scrapes a web page
 def get_page(link):
 	url = link
-	if "http" or "https" not in url:
+	if "http" not in url or "https" not in url:
 		url = "http://" + url
 
 	req = requests.get(url)
@@ -15,15 +17,14 @@ def get_page(link):
 
 
 #finds and returns the wiki links for all algorithms in a wiki page
-def get_all_links(content):
-	soup = bs(content)
-
+def get_all_links(soup):
 	a_tags = soup.findAll('a')
 	urls = [a.get('href') for a in a_tags]
 	urls = [l for l in urls if l is not None]
 
 
 	wiki_links = [l for l in urls if "wiki" in l]
+	wiki_links = [l for l in wiki_links if "google" not in l]
 	wiki_links = ["https://en.wikipedia.org" + l for l in wiki_links if ".org" not in l]
 
 	processed_links = [l for l in wiki_links if "algo" in l]
@@ -43,94 +44,53 @@ def get_alg_info(wiki_url):
 	p_tags = soup.findAll('p')
 	desc = p_tags[0].string
 
-	return name, desc, wiki_url
+	related_urls = get_all_links(soup)
+
+	return name, desc, related_urls
 
 
-#the class for the data structure representing a node for each algorithm
-class AlgNode:
-	def __init__(self, id, name, description, wiki_url):
-		#int
-		self.id = id
-		#str
-		self.name = name
-		#str
-		self.description = description
-		#str
-		self.wiki_url = wiki_url
-		#lst
-		self.related_algs = []
-		#dictionary
-		self.related_alg_count = {}
+def update_graph(url):
+	try:
+		if models.Frontier.objects.filter(url = str(url)).exists():
+			alg_obj = models.Frontier.objects.get(url=str(url))
+			alg_obj.searched = True
+			alg_obj.save()
+		else:
+			alg_obj = models.Frontier(url=str(url), searched=True)
+			alg_obj.save()
 
-		#future variables to incorporate
-		#avg_date_used =
-		#category = 
-	
-	#necessary function for the add_related_alg func
-	def related_algs_sort_key(self, node):
-		#include other factors later on such avg_date_algorithm is implemented
-		return self.related_alg_count[node.id]
+		time.sleep(1)
+		name, desc, related_urls = get_alg_info(url)
 
-	def add_related_algs(self, related_algs):
-		#add possible related algorithms
-		for alg in related_algs:
-			if alg in self.related_algs:
-				self.related_alg_count[alg.id] = self.related_alg_count[alg.id] + 1
-			else:
-				self.related_algs.append(alg)
-				self.related_alg_count[alg.id] = 1
+		G = nx.read_gexf("graph_data")
 
-		#reorganize into most related algorithm based on the count
-		self.related_algs.sort(key=self.related_algs_sort_key, reverse=True)
+		frontier = []
+		related_nodes = []
 
+		for related_url in related_urls:
+			time.sleep(1)
+			related_name, related_desc, _ = get_alg_info(str(related_url))
+			alg_obj, created = models.Frontier.objects.get_or_create(url=str(related_url))
 
-	def return_related_algs(self):
-		return self.related_algs
+			related_nodes.append((str(related_name), str(related_desc), str(related_url)))
 
+		G.add_node(url, name=str(name), desc=str(desc), url=str(url))
 
+		for node in related_nodes:
+			G.add_node(str(node[2]), name=str(node[0]), desc=str(node[1]), url=str(node[2]))
+			try:
+				G[str(url)][str(node[2])][weight] = G[str(url)][str(node[2])][weight] + 1
+			except:
+				G.add_edge(str(url), str(node[2]), weight=1)
+		nx.write_gexf(G, "graph_data")
+	except:
+		pass
 
-#def get_new_id():
-
-
-#needs to be updated to method with static storage
-algnodes_lst = []
-
-#takes a list of wiki links of algorithms, and updates our data structure
-#horrendous complexity that needs to be updated
-def update_related_algs(wiki_urls):
-	related_algs = []
-
-	#creates new algnode objects if not existant yet
-	for url in wiki_urls:
-		name, desc, _ = get_alg_info(url)
-
-		alg_node_exists = False
-		for alg_node in algnodes_lst:
-			if alg_node.name == name:
-				alg_node_exists = True
-				related_algs.append(alg_node.related_algs)
-
-		if not alg_node_exists:
-			new_alg = AlgNode(get_new_id(),name,desc,url)
-			algnodes_lst.append(new_alg)
-			related_algs.append(new_alg)
-
-	#add number of connections to alg nodes
-	for alg_node in related_algs:
-		alg_node.add_related_algs(related_algs)
-
-
-#takes a list of wiki urls of algorithms, and returns related algorithms that might be improvements
-def get_related_algs(wiki_urls):
-	curr_algs = []
-	related_algs = []
-
-	for url in wiki_urls:
-		for alg_node in algnodes_lst:
-			if alg_node.wiki_url == url:
-				curr_algs.append(alg_node)
-
-	for alg_node in curr_algs:
-		related_algs.append(alg_node.return_related_algs())
-
+def return_related_algs(url):
+	G = nx.read_gexf("graph_data")
+	related_algs = sorted(G[url].items(), key=lambda edge: edge[1]['weight'],reverse=True)
+	related_algs = related_algs[:10]
+	print(related_algs)
+	related_algs = [alg[0] for alg in related_algs]
+	print(related_algs)
 	return related_algs

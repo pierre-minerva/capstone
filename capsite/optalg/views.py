@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.context_processors import csrf
-from . import functions
+from optalg import functions
 
 # Create your views here.
 def home(request):
@@ -11,14 +11,9 @@ def home(request):
 	if request.method == "POST":
 		link = request.POST['link']
 
-		content = functions.get_page(link)
-
-		alg_links = functions.get_all_links(content)
-
-		functions.update_related_algs(alg_links)
-
-		related_algs = get_related_algs(alg_links)
-
+		related_algs = functions.return_related_algs(link)
+		print(related_algs)
+		c["related_algs"]  = related_algs
 
 		return render(request, 'optalg/home.html',c)
 
