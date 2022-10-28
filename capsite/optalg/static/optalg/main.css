@@ -1,3 +1,12 @@
+body {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url('pexels-kevin-ku-577585.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .masthead {
   height: 100vh;
   min-height: 500px;
@@ -11,4 +20,26 @@
 
 .text-center {
   background-color: rgba(0,0,0,0.5);
+}
+
+.credits {
+  color: #007bff !important;
+}
+
+.container {
+  text-align: center;
+  background-color: rgba(0,0,0,0.5);
+  color: #007bff;
+}
+
+.app-results {
+  text-align: left;
+}
+
+.whitepaper {
+  align-items: center;
+  width: 75%;
+  min-height: 500px;
+  display: block;
+  margin: auto;
 }
