@@ -1,14 +1,17 @@
 {% extends "optalg/base.html" %}
 {% block content %}
-	<h1>Pierre Alkubeh's OptAlg Capstone Project</h1>
-	<h2>Paste a link here:</h2>
-	<form action="/" method="POST">{% csrf_token %}
-		Link: <input type="text" name="link">
-		<input type="submit" name="submit" value="Submit">
-	</form>
-	<h2>Related Algs</h2>
-	{% for alg in related_algs %}
-	<p>{{alg}}</p>
-	{% endfor %}
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'optalg/main.css' %}">
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12 text-center">
+        <h1 class="display-3">Optimal Algorithm Website</h1>
+        <h2 class="display-5">Find The Best Algorithm For Your Needs!</h2>
+        <button class="btn btn-primary btn-lg" onclick="window.location.href='/app';">Try It Out!</button>
+        <button class="btn btn-primary btn-lg" onclick="window.location.href='/writeup';">Whitepaper</button>
+      </div>
+    </div>
+  </div>
+</header>
 {% endblock content %}

@@ -4,5 +4,6 @@ from . import views
 urlpatterns = [
 	path('', views.home, name="optalg-home"),
 	path('home/', views.home, name="optalg-home"),
+	path('app/', views.app, name="optalg-app"),
 	path("writeup/", views.writeup, name="optalg-writeup"),
 ]

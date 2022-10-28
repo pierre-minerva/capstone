@@ -1,0 +1,14 @@
+.masthead {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url('pexels-kevin-ku-577585.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color:  #007bff;
+  font-size: 4em;
+}
+
+.text-center {
+  background-color: rgba(0,0,0,0.5);
+}
