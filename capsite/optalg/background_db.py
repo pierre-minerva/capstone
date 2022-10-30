@@ -5,9 +5,10 @@ import time
 import networkx as nx
 
 #A frontier based chronic update appraoch
-@background(schedule=5)
+@background(schedule=10)
 def grow_db():
 	new_alg_obj = models.Frontier.filter(searched=False)[0]
-	functions.update_graph(new_alg_obj.url)
+	Update = functions.WebScraper(url=new_alg_obj.url, run=True)
+	del Update
 
-grow_db(repeat=5)
+grow_db(repeat=10)
