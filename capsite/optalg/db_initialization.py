@@ -4,14 +4,14 @@ from optalg import models
 import time
 import networkx as nx
 
+#This page is used to kickstart the database.  It contains a list of algorithms
 wiki_algs_list = "https://en.wikipedia.org/wiki/List_of_algorithms"
-_, _, init_algs = functions.get_alg_info(wiki_algs_list)
 
+#We create the network data file.
 G = nx.Graph()
 nx.write_gexf(G, "graph_data")
+del G
 
-for alg_url in init_algs:
-	try:
-		functions.update_graph(alg_url)
-	except:
-		pass
+#We run the Update class
+Update = functions.WebScraper(url=wiki_algs_list, run=True)
+del Update
