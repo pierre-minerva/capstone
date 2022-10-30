@@ -7,6 +7,11 @@ body {
   background-repeat: no-repeat;
 }
 
+table, th, td {
+  border: 1px solid #007bff;
+  border-collapse: collapse;
+}
+
 .masthead {
   height: 100vh;
   min-height: 500px;
@@ -19,7 +24,7 @@ body {
 }
 
 .text-center {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.9);
 }
 
 .credits {
@@ -28,7 +33,7 @@ body {
 
 .custom-background {
   text-align: center;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.9);
   color: #007bff;
 }
 

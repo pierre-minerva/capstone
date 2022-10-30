@@ -148,8 +148,9 @@ def return_related_algs(url):
 	G = nx.read_gexf("graph_data")
 	#Find the all nodes connected to the requested algorithm sorted by edge weight which represents similarity of algorithms.
 	related_algs = sorted(G[url].items(), key=lambda edge: edge[1]['weight'],reverse=True)
+	#print(G.nodes[url])
 	#Get the top 10 related algorithms.
 	related_algs = related_algs[:10]
 	#Get algorithm information from the nodes
-	related_algs = [alg[0] for alg in related_algs]
+	related_algs = [(G.nodes[alg[0]]["name"], G.nodes[alg[0]]["desc"], G.nodes[alg[0]]["url"]) for alg in related_algs]
 	return related_algs

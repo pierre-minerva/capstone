@@ -18,7 +18,7 @@ def app(request):
 	if request.method == "POST":
 		link = request.POST['link']
 
-		related_algs = functions.return_related_algs(link)
+		related_algs = data_functions.return_related_algs(link)
 		c["related_algs"]  = related_algs
 
 		return render(request, 'optalg/app.html',c)

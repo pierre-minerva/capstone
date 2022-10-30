@@ -14,12 +14,25 @@
 	<br>
 	<!-- This is step 2 where alternate algorithms are returned -->
 	<h2 class="display-5">Step 2: Receive a Ranked List of Alternative Algorithms</h2>
-	<h3 class="display-7">Related Algorithms:</h3>
-	<ol class="app-results">
+	{% if related_algs %}
+	<table>
+		<tr>
+			<th>Rank</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Link</th>
+		</tr>
 		{% for alg in related_algs %}
-		<li><a target="_blank" rel="noopener noreferrer" href="{{alg}}">{{alg}}</a></li>
+		<tr>
+			<td>{{forloop.counter}}</td>
+			<td>{{alg.0}}</td>
+			<td>{{alg.1}}</td>
+			<td><a target="_blank" rel="noopener noreferrer" href="{{alg}}">{{alg.2}}</a></td>
+		</tr>
 		{% endfor %}
-	</ol>
+	</table>
+	{% endif %}
+
 	<br>
 </div>
 {% endblock content %}

@@ -1,4 +1,4 @@
-from optalg import functions
+from optalg import data_functions
 from background_task import background
 from optalg import models
 import time
@@ -13,5 +13,5 @@ nx.write_gexf(G, "graph_data")
 del G
 
 #We run the Update class
-Update = functions.WebScraper(url=wiki_algs_list, run=True)
+Update = data_functions.WebScraper(url=wiki_algs_list, run=True)
 del Update
