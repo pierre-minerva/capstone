@@ -5,7 +5,7 @@
 	<!-- This step 1 which contains the form to request alternate algorithms -->
 	<h1 class="display-3">Optimal Algorithm App</h1>
 	<h2 class="display-5">Step 1: Paste a Link Here</h2>
-	<h3 class="display-7">Pase a wikipedia link to an algorithm that meets your needs to find alternatives<h3>
+	<h3 class="display-7">Paste a wikipedia link to an algorithm that meets your needs to find alternatives<h3>
 	<form action="/app/" method="POST">{% csrf_token %}
 		Link: <input type="text" name="link">
 		{% csrf_token %}

@@ -4,3 +4,15 @@ from django.db import models
 class Frontier(models.Model):
 	url = models.CharField(max_length=255, unique=True)
 	searched = models.BooleanField(default=False)
+
+class Algorithm(models.Model):
+	name = models.CharField(max_length=225, Null=True)
+	desc = models.CharField(max_length=1500, Null=True)
+	url = models.CharField(max_length=225, unique=True)
+	scraped = models.BooleanField(default=False)
+
+#This can be used to represent the network
+class Edge(models.Model):
+	alg1 = models.ForeignKey(Algorithm, on_delete=models.CASCADE)
+	alg2 = models.ForeignKey(Algorithm, on_delete=models.CASCADE)
+	weight = models.IntegerField()
