@@ -3,6 +3,7 @@ import requests
 import networkx as nx
 import time
 from optalg import models
+from django.db.models import Q
 
 #Purpose: To get the algorithm name, description, and a list of related algorithms from provided algorithm wikipedia page. 
 class WebScraper:
@@ -80,17 +81,13 @@ class WebScraper:
 			#The frontier database's main function is provide a database for us to account for which algorithms have already been scraped to prevent duplicates if they have
 			#and to queue them for scraping if they have not. 
 			#This if statement checks if a algorithm is already in our db and marks it as scraped (searched), else it inserts an entry marked as scraped.
-			if models.Frontier.objects.filter(url = str(alg_info[0])).exists():
-				alg_obj = models.Frontier.objects.get(url=str(alg_info[0]))
-				alg_obj.searched = True
-				alg_obj.save()
+			if models.Algorithm.objects.filter(url = str(alg_info[0])).exists():
+				main_alg = models.Algorithm.objects.get(url=str(alg_info[0]))
+				main_alg.scraped = True
+				main_alg.save()
 			else:
-				alg_obj = models.Frontier(url=str(alg_info[0]), searched=True)
-				alg_obj.save()
-			
-
-			#Read the graph data and open it in the object G.
-			G = nx.read_gexf("graph_data")
+				main_alg = models.Algorithm(url=str(alg_info[0]), searched=True)
+				main_alg.save()
 
 			#This list will be used to update the graph.
 			related_nodes = []
@@ -100,24 +97,24 @@ class WebScraper:
 				#sleep inserted to provide server processor a "break" since this algorithm is running constantly in the background and time.
 				time.sleep(1)
 				#for every new related algorithm detected in the scraped web page, we create a data entry in the db for the related algorithm to be queued for scraping.
-				alg_obj, created = models.Frontier.objects.get_or_create(url=str(datum[0]))
+				edge_alg, created = models.Algorithm.objects.get_or_create(name=ustr(datum[1]), desc=str(datum[2]), url=str(datum[0]))
 
 				#add the related algorithm data into the list that will be used to update the graph
-				related_nodes.append((str(datum[1]), str(datum[2]), str(datum[0])))
-
-			#Create a node if it doesn't exist containing the algorithm name, description, and url in that order.
-			G.add_node(url, name=str(alg_info[1]), desc=str(alg_info[2]), url=str(alg_info[0]))
+				related_nodes.append(edge_alg)
 
 			for node in related_nodes:
-				#Create a node if it doesn't exist for all related algorithms
-				G.add_node(str(node[2]), name=str(node[0]), desc=str(node[1]), url=str(node[2]))
-				#If an edge exists between the main algorithm node and the related algorithm node, increase its weight by 1, otherwise, create an edge between the two.
-				try:
-					G[str(url)][str(node[2])][weight] = G[str(alg_info[0])][str(node[2])][weight] + 1
-				except:
-					G.add_edge(str(alg_info[0]), str(node[2]), weight=1)
-			#save the data by writing the graph back into the file. 
-			nx.write_gexf(G, "graph_data")
+				#This is a bidirectional table which we represent without risk of duplicates is alg1 and alg2 are chosen by alphabetic order.
+				if main_alg.name > node.name:
+					edge, created = models.Edge.objects.get_or_create(alg1=main_alg, alg2=node)
+				else:
+					edge, created = models.Edge.objects.get_or_create(alg1=node, alg2=main_alg)
+				#If its a new edge it has a weight of 1, otherwise we increase weight by 1
+				if created:
+					edge.weight = 1
+					edge.save()
+				else:
+					edge.weight = edge.weight + 1
+					edge.save()
 		except:
 			pass
 
@@ -144,13 +141,11 @@ class WebScraper:
 
 #This function gets the related algorithms from the saved network graph and returns it as a list.
 def return_related_algs(url):
-	#read the graph network file
-	G = nx.read_gexf("graph_data")
-	#Find the all nodes connected to the requested algorithm sorted by edge weight which represents similarity of algorithms.
-	related_algs = sorted(G[url].items(), key=lambda edge: edge[1]['weight'],reverse=True)
-	#print(G.nodes[url])
-	#Get the top 10 related algorithms.
-	related_algs = related_algs[:10]
+	User.objects.filter(Q(income__gte=5000) | Q(income__isnull=True))
+	#get the algorithm data object
+	main_alg = models.Algorithm.get(url=url)
+	#Query the top 10 edges ordered by weight
+	edge_query = models.Edge.objects.filter(Q(alg1=main_alg) | Q(alg2=main_alg)).order_by('-weight')[:10]
 	#Get algorithm information from the nodes
-	related_algs = [(G.nodes[alg[0]]["name"], G.nodes[alg[0]]["desc"], G.nodes[alg[0]]["url"]) for alg in related_algs]
+	related_algs = [(edge.alg1.name, edge.alg1.desc, edge.alg1.url) if edgle.alg1=main_alg else (edge.alg2.name, edge.alg2.desc, edge.alg2.url) for edge in edge_query]
 	return related_algs

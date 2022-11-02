@@ -15,4 +15,4 @@ class Algorithm(models.Model):
 class Edge(models.Model):
 	alg1 = models.ForeignKey(Algorithm, on_delete=models.CASCADE)
 	alg2 = models.ForeignKey(Algorithm, on_delete=models.CASCADE)
-	weight = models.IntegerField()
+	weight = models.IntegerField(default=0)
