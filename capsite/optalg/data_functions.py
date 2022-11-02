@@ -4,6 +4,7 @@ import networkx as nx
 import time
 from optalg import models
 from django.db.models import Q
+import matplotlib.pyplot as plt
 
 #Purpose: To get the algorithm name, description, and a list of related algorithms from provided algorithm wikipedia page. 
 class WebScraper:
@@ -139,13 +140,23 @@ class WebScraper:
 			pass
 
 
+def create_graph(edge_query):
+	g = nx.Graph()
+
+ 	for edge in edge_query:
+ 		g.add_edge(edge.alg1, edge.alg2, weight=edge.weight)
+	 
+	nx.draw(g, with_labels = True)
+	plt.savefig("static/optalg/graph.png")
+
 #This function gets the related algorithms from the saved network graph and returns it as a list.
 def return_related_algs(url):
-	User.objects.filter(Q(income__gte=5000) | Q(income__isnull=True))
 	#get the algorithm data object
 	main_alg = models.Algorithm.get(url=url)
 	#Query the top 10 edges ordered by weight
 	edge_query = models.Edge.objects.filter(Q(alg1=main_alg) | Q(alg2=main_alg)).order_by('-weight')[:10]
-	#Get algorithm information from the nodes
+	#Get related algorithm information from the edges
 	related_algs = [(edge.alg1.name, edge.alg1.desc, edge.alg1.url) if edgle.alg1=main_alg else (edge.alg2.name, edge.alg2.desc, edge.alg2.url) for edge in edge_query]
+
+	create_graph(edge_query)
 	return related_algs
