@@ -112,7 +112,6 @@ class WebScraper:
 					edge, created = models.Edge.objects.get_or_create(alg1=node, alg2=main_alg)
 				#If its a new edge it has a weight of 1, otherwise we increase weight by 1
 				if created:
-					edge.weight = 1
 					edge.save()
 				else:
 					edge.weight = edge.weight + 1
