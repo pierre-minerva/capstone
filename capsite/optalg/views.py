@@ -18,8 +18,9 @@ def app(request):
 	if request.method == "POST":
 		link = request.POST['link']
 
-		related_algs = data_functions.return_related_algs(link)
+		related_algs, pic_id = data_functions.return_related_algs(link)
 		c["related_algs"]  = related_algs
+		c["pic_id"]  = pic_id
 
 		return render(request, 'optalg/app.html',c)
 
@@ -28,4 +29,4 @@ def app(request):
 
 #The writeup page
 def writeup(request):
-	return render(request, 'optalg/writeup.html') 
+	return render(request, 'optalg/writeup.html')

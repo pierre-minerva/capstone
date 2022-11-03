@@ -5,6 +5,7 @@ import time
 from optalg import models
 from django.db.models import Q
 import matplotlib.pyplot as plt
+import random
 
 #Purpose: To get the algorithm name, description, and a list of related algorithms from provided algorithm wikipedia page. 
 class WebScraper:
@@ -147,7 +148,11 @@ def create_graph(edge_query):
  		g.add_edge(edge.alg1, edge.alg2, weight=edge.weight)
 	 
 	nx.draw(g, with_labels = True)
-	plt.savefig("static/optalg/graph.png")
+	pic_id = random.randint(10000,99999)
+	plt.savefig("static/optalg/network_imgs/{}.png".format(pic_id))
+
+	return pic_id
+
 
 #This function gets the related algorithms from the saved network graph and returns it as a list.
 def return_related_algs(url):
@@ -158,5 +163,6 @@ def return_related_algs(url):
 	#Get related algorithm information from the edges
 	related_algs = [(edge.alg1.name, edge.alg1.desc, edge.alg1.url) if edgle.alg1=main_alg else (edge.alg2.name, edge.alg2.desc, edge.alg2.url) for edge in edge_query]
 
-	create_graph(edge_query)
-	return related_algs
+	pic_id = create_graph(edge_query)
+
+	return related_algs, pic_id
