@@ -6,13 +6,13 @@ class Frontier(models.Model):
 	searched = models.BooleanField(default=False)
 
 class Algorithm(models.Model):
-	name = models.CharField(max_length=225, Null=True)
-	desc = models.CharField(max_length=1500, Null=True)
+	name = models.CharField(max_length=225, null=True)
+	desc = models.CharField(max_length=1500, null=True)
 	url = models.CharField(max_length=225, unique=True)
 	scraped = models.BooleanField(default=False)
 
 #This can be used to represent the network
 class Edge(models.Model):
-	alg1 = models.ForeignKey(Algorithm, on_delete=models.CASCADE)
-	alg2 = models.ForeignKey(Algorithm, on_delete=models.CASCADE)
+	alg_one = models.ForeignKey(Algorithm, on_delete=models.CASCADE, related_name="alg_one")
+	alg_two = models.ForeignKey(Algorithm, on_delete=models.CASCADE, related_name="alg_two")
 	weight = models.IntegerField(default=1)

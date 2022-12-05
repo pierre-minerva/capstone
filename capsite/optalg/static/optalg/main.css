@@ -44,6 +44,7 @@ table, th, td {
 .whitepaper {
   align-items: center;
   width: 75%;
+  height: 80vh;
   min-height: 500px;
   display: block;
   margin: auto;
