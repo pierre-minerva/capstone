@@ -29,7 +29,7 @@ sudo apt-get install gcc python3-dev -y
 apt install python3-pip -y
 pip install -r capstone/python-requirements.txt
 
-python3 capstone/capsite/manage.py makemigratns
+python3 capstone/capsite/manage.py makemigrations
 python3 capstone/capsite/manage.py migrate
 python3 capstone/capsite/manage.py createsuperuser
 
