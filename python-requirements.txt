@@ -1,7 +1,0 @@
-wheel
-Django==3.2.7
-BeautifulSoup4
-requests
-mysqlclient
-networkx
-django-background-tasks
