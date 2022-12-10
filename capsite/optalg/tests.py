@@ -3,7 +3,7 @@ from optalg.models import Algorithm, Edge
 from data_functions import WebScraper
 import requests
 
-# Create your tests here.
+# We test the Algorithm database table ORM functions
 class AlgorithmTestCase(TestCase):
 	def setUp(self):
 		#creates the database objects we want to test
@@ -25,6 +25,7 @@ class AlgorithmTestCase(TestCase):
 			self.assertEqual(test2.url, "www.test2.com")
 			self.assertEqual(test2.scraped, True)
 
+#We test the Edge database table orm functions. 
 class EdgeTestCase(TestCase):
 	def setUp(self):
 		#creates the database objects we want to test
@@ -48,6 +49,7 @@ class EdgeTestCase(TestCase):
 			#tests the value
 			self.assertEqual(test1.weight, 2)
 
+#We test the webscraper.
 class NetworkTestCase(TestCase):
 	def setUp(self):
 		Scraper = WebScraper(url="https://en.wikipedia.org/wiki/A*_search_algorithm")

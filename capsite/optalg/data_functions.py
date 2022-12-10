@@ -140,14 +140,18 @@ class WebScraper:
 			pass
 
 
+#This function is used to create an image of the algorithm network using the networkx library.
 def create_graph(edge_query):
+	#We construct the network in networkX
 	g = nx.Graph()
-
 	for edge in edge_query:
 		g.add_edge(edge.alg_one, edge.alg_two, weight=edge.weight)
 	
+	#We draw the network
 	nx.draw(g, with_labels = True)
+	#We select a random number to assign as a name to the image.
 	pic_id = random.randint(10000,99999)
+	#We save the image and return the picture id so we can display it to the user. 
 	plt.savefig("static/optalg/network_imgs/{}.png".format(pic_id))
 
 	return pic_id
@@ -168,6 +172,7 @@ def return_related_algs(url):
 	else:
 		related_algs = [(edge.alg_two.name, edge.alg_two.desc, edge.alg_two.url) for edge in edge_query]
 
+	#We create a picture of the graph to show on the frontend and return the picture name. 
 	pic_id = create_graph(edge_query)
 
 	return related_algs, pic_id
