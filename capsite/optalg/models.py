@@ -28,4 +28,4 @@ class Edge(models.Model):
 
 	#We index on both alg_one and alg_two jointly because we will always query the Edge table with reference to both these values. 
 	class Meta:
-		index = [models.Index(fields=['alg_one','alg_two'])]
+		indexes = [models.Index(fields=['alg_one','alg_two'])]
