@@ -1,8 +1,5 @@
 #!/bin/bash
 
-git clone https://github.com/pierre-minerva/capstone
-source capstone/capstone-env/bin/activate
-
 sudo apt update
 sudo apt install mysql-server -y
 
@@ -27,7 +24,11 @@ sudo apt install libmysqlclient-dev default-libmysqlclient-dev -y
 sudo apt-get install gcc python3-dev -y
 
 apt install python3-pip -y
-pip install -r capstone/python-requirements.txt
+
+python3 -m venv capstone/venv
+source capstone/venv/bin/activate
+
+pip3 install -r capstone/requirements.txt
 
 python3 capstone/capsite/manage.py makemigrations
 python3 capstone/capsite/manage.py migrate
