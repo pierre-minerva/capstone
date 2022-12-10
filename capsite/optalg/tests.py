@@ -1,5 +1,7 @@
 from django.test import TestCase
 from optalg.models import Algorithm, Edge
+from data_functions import WebScraper
+import requests
 
 # Create your tests here.
 class AlgorithmTestCase(TestCase):
@@ -45,3 +47,13 @@ class EdgeTestCase(TestCase):
 			test1.weight = test1.weight + 1
 			#tests the value
 			self.assertEqual(test1.weight, 2)
+
+class NetworkTestCase(TestCase):
+	def setUp(self):
+		Scraper = WebScraper(url="https://en.wikipedia.org/wiki/A*_search_algorithm")
+
+		def test_algorithm_node(self):
+			self.asssertIsNotNone(Algorithm.objects.get("https://en.wikipedia.org/wiki/A*_search_algorithm"))
+
+		def test_edges(self):
+			self.asssertIsNotNone(Edge.objects.get(Q(alg_one="https://en.wikipedia.org/wiki/A*_search_algorithm") | Q(alg_two="https://en.wikipedia.org/wiki/A*_search_algorithm")))

@@ -9,7 +9,7 @@ import networkx as nx
 @background(schedule=100)
 def grow_db():
 	new_alg_obj = models.Frontier.filter(searched=False)[0]
-	Update = data_functions.WebScraper(url=new_alg_obj.url, run=True)
+	Update = data_functions.WebScraper(url=new_alg_obj.url)
 	del Update
 
 grow_db(repeat=100)
