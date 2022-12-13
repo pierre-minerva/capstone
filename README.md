@@ -1,6 +1,13 @@
 # Optimal Algorithm Web App - Capstone Project
 ## Pierre Alkubeh
 
+### How to Deploy w/ Docker For Development
+```
+docker buld -t capsite .
+docker volume create db
+docker run -dp 8000:8000 -v db:/etc/db capsite
+```
+
 ### How To Deploy Web App:
 
 It's a simple 3 step process.
