@@ -2,10 +2,14 @@ version: "3.8"
 
 services:
   web:
-    build: ./capsite
+    build: 
+      context: ./capsite
+      dockerfile: Dockerfile.prod
     command: gunicorn capsite.wsgi:application --bind 0.0.0.0:8000
-    ports:
-      - 8000:8000
+    volumes:
+      - static_volume:/capsite/static
+    expose:
+      - 8000
     depends_on:
       - db
 
@@ -17,5 +21,15 @@ services:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: mysql
 
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/static
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
 volumes:
   mysql_data:
+  static_volume:
