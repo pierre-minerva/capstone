@@ -3,12 +3,14 @@
 
 ### How to Deploy w/ Docker for Production
 ```
-docker compose -f docker-compose.prod.yml up -d --build
-docker exec web python3 optalg/db_initialization.py
-```
+git clone https://github.com/pierre-minerva/capstone.git
 
-### How to Deploy w/ Docker For Development
-```
-docker compose up -d --build
+#Follow this link to install Docker & Docker Compose: https://docs.docker.com/engine/install/ubuntu/
+
+cd capstone
+nano capsite/capsite/settings.py
+#Add IP address to allowed hosts
+
+docker compose -f docker-compose.prod.yml up -d --build
 docker exec web python3 optalg/db_initialization.py
 ```

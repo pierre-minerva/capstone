@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn capsite.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/capsite/static
+      - static_volume:/optalg/static
     expose:
       - 8000
     depends_on:
