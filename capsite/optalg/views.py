@@ -30,8 +30,3 @@ def app(request):
 #The writeup page
 def writeup(request):
 	return render(request, 'optalg/writeup.html')
-
-#DB Initialization
-def db_init(request):
-	db_initialization.db_init()
-	redirect('home')

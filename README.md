@@ -12,7 +12,7 @@ nano capsite/capsite/settings.py
 #Add IP address to allowed hosts
 
 docker compose -f docker-compose.prod.yml up -d --build
-#docker compose exec -it web python3 manage.py makemigrations
-#docker compose exec -it web python3 manage.py migrate
+docker compose exec -it web python3 manage.py makemigrations
+docker compose exec -it web python3 manage.py migrate
 #docker compose exec -it web python3 optalg/db_initialization.py
 ```

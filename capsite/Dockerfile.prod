@@ -11,8 +11,6 @@ RUN pip3 install --upgrade pip
 COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
 
-RUN python3 -c 'import time; time.sleep(45)'
-
 #RUN python3 manage.py makemigrations
 #RUN python3 manage.py migrate
 #RUN python3 optalg/db_initialization.py

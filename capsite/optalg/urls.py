@@ -6,7 +6,6 @@ urlpatterns = [
 	path('home/', views.home, name="optalg-home"),
 	path('app/', views.app, name="optalg-app"),
 	path("writeup/", views.writeup, name="optalg-writeup"),
-	path('db-init/', views.db_init, name="db-init")
 ]
 
 #Schedule background_tasks
