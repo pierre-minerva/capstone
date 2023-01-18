@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template.context_processors import csrf
-from optalg import data_functions, db_initialization
+from optalg import data_functions
 
 #The home page
 def home(request):

@@ -1,11 +1,10 @@
+import os
 import sys
 sys.path.append("./optalg")
 from background_task import background
 import models
 import data_functions
 import time
-import networkx as nx
-import os
 
 
 def init_db():
