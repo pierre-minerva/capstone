@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template.context_processors import csrf
-from optalg import data_functions
+from optalg import data_functions, db_initialization
 
 #The home page
 def home(request):
@@ -30,3 +30,8 @@ def app(request):
 #The writeup page
 def writeup(request):
 	return render(request, 'optalg/writeup.html')
+
+#DB Initialization
+def db_init(request):
+	db_initialization.db_init()
+	redirect('home')

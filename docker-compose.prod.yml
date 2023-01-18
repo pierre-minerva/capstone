@@ -11,15 +11,21 @@ services:
     expose:
       - 8000
     depends_on:
-      - db
+      - mysql
 
-  db:
+  mysql:
     image: mysql:8.0
     volumes:
       - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: mysql
+      MYSQL_DATABASE_HOST: mysql
+      MYSQL_DATABASE_PORT: 3306
 
   nginx:
     build: ./nginx

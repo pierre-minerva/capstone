@@ -1,7 +1,8 @@
 import sys
 sys.path.append("./optalg")
 from background_task import background
-from . import models, data_functions
+import models
+import data_functions
 import time
 import networkx as nx
 import os
