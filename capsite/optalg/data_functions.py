@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 import networkx as nx
 import time
-from optalg import models
+import models
 from django.db.models import Q
 import matplotlib.pyplot as plt
 import random
