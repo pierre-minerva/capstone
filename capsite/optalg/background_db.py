@@ -1,4 +1,4 @@
-from optalg import data_functions
+import data_functions
 from background_task import background
 from . import models
 import time
