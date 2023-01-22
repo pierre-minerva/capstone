@@ -15,6 +15,8 @@ docker compose -f docker-compose.prod.yml up -d --build
 docker compose exec -it web python3 manage.py makemigrations
 docker compose exec -it web python3 manage.py migrate
 
+docker compose exec -itd web python3 manage.py dbinit
 crontab -e
+#Add this to the end of the file
 5 * * * * cd capstone && docker compose exec -itd web python3 manage.py dbinit
 ```

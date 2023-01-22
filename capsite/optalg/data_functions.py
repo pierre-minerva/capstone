@@ -108,7 +108,7 @@ class WebScraper:
 			for node in related_nodes:
 				try:
 					#This is a bidirectional table which we represent without risk of duplicates is alg_one and alg_two are chosen by alphabetic order.
-					if main_alg.name > node.name:
+					if main_alg.url > node.url:
 						edge, created = models.Edge.objects.get_or_create(alg_one=main_alg, alg_two=node)
 					else:
 						edge, created = models.Edge.objects.get_or_create(alg_one=node, alg_two=main_alg)
@@ -157,7 +157,7 @@ def create_graph(edge_query):
 	#We select a random number to assign as a name to the image.
 	pic_id = random.randint(10000,99999)
 	#We save the image and return the picture id so we can display it to the user. 
-	plt.savefig("static/optalg/network_imgs/{}.png".format(pic_id))
+	plt.savefig("/static/optalg/network_imgs/{}.png".format(pic_id))
 
 	return pic_id
 
