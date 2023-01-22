@@ -27,13 +27,13 @@
 			<td>{{forloop.counter}}</td>
 			<td>{{alg.0}}</td>
 			<td>{{alg.1}}</td>
-			<td><a target="_blank" rel="noopener noreferrer" href="{{alg}}">{{alg.2}}</a></td>
+			<td><a target="_blank" rel="noopener noreferrer" href="{{alg.2}}">{{alg.2}}</a></td>
 		</tr>
 		{% endfor %}
 	</table>
 	<hr>
 	{% load static %}
-	<img src="{% static 'optalg/network_imgs/{{pic_id}}.png' %}" class="img-fluid" alt="Responsive image">
+	<img src="static/optalg/network_imgs/{{pic_id}}.png" class="img-fluid" alt="Responsive image">
 	{% endif %}
 
 	<br>

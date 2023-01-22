@@ -157,8 +157,9 @@ def create_graph(edge_query):
 	#We select a random number to assign as a name to the image.
 	pic_id = random.randint(10000,99999)
 	#We save the image and return the picture id so we can display it to the user. 
-	plt.savefig("/static/optalg/network_imgs/{}.png".format(pic_id))
-
+	plt.savefig("/optalg/static/optalg/network_imgs/{}.png".format(pic_id))
+	plt.close()
+	
 	return pic_id
 
 
