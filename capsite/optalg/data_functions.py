@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 import networkx as nx
 import time
-import models
+from optalg import models
 from django.db.models import Q
 import matplotlib.pyplot as plt
 import random
@@ -88,21 +88,21 @@ class WebScraper:
 				main_alg.scraped = True
 				main_alg.save()
 			else:
-				main_alg = models.Algorithm(url=str(alg_info[0]), searched=True)
-				main_alg.save()
+				main_alg = models.Algorithm.objects.create(url=str(alg_info[0]), scraped=True)
 
 			#This list will be used to update the graph.
 			related_nodes = []
 
 
 			for datum in related_url_data:
-				#sleep inserted to provide server processor a "break" since this algorithm is running constantly in the background and time.
-				time.sleep(1)
-				#for every new related algorithm detected in the scraped web page, we create a data entry in the db for the related algorithm to be queued for scraping.
-				edge_alg, created = models.Algorithm.objects.get_or_create(name=ustr(datum[1]), desc=str(datum[2]), url=str(datum[0]))
+				try:
+					#for every new related algorithm detected in the scraped web page, we create a data entry in the db for the related algorithm to be queued for scraping.
+					edge_alg, created = models.Algorithm.objects.get_or_create(name=str(datum[1]), desc=str(datum[2]), url=str(datum[0]))
 
-				#add the related algorithm data into the list that will be used to update the graph
-				related_nodes.append(edge_alg)
+					#add the related algorithm data into the list that will be used to update the graph
+					related_nodes.append(edge_alg)
+				except Exception as e:
+					print(e)
 
 			for node in related_nodes:
 				#This is a bidirectional table which we represent without risk of duplicates is alg_one and alg_two are chosen by alphabetic order.
@@ -116,8 +116,8 @@ class WebScraper:
 				else:
 					edge.weight = edge.weight + 1
 					edge.save()
-		except:
-			pass
+		except Exception as e:
+			print(e)
 
 	#This method runs the all the above method for the purpose of taking a url of a wikipedia algorithm page, scraping it, and updating our database and graph.
 	def run(self, url):
@@ -136,8 +136,8 @@ class WebScraper:
 
 			#update the data
 			self.update_graph(alg_info, related_url_data)
-		except:
-			pass
+		except Exception as e:
+			print(e)
 
 
 #This function is used to create an image of the algorithm network using the networkx library.

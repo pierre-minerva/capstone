@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from background_task import background
 from optalg import data_functions
+from optalg import models
 
 class Command(BaseCommand):
 	help = "Initialized the DB"
