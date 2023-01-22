@@ -12,7 +12,7 @@ class Command(BaseCommand):
 		if not models.Frontier.objects.filter(url = "https://en.wikipedia.org/wiki/List_of_algorithms").exists():
 			frontier_obj = models.Frontier.objects.create(url="https://en.wikipedia.org/wiki/List_of_algorithms")
 		#We get the new algorithm to scrape at the top of the list.
-		new_alg_obj = models.Frontier.filter(searched=False)[0]
+		new_alg_obj = models.Frontier.objects.filter(searched=False)[0]
 		#We scrape it, collecting information on it and adding new algorithms found to the frontier, and remove it from the list.
 		Update = data_functions.WebScraper(url=new_alg_obj.url)
 		new_alg_obj.searched = True

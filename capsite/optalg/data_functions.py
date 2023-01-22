@@ -98,25 +98,29 @@ class WebScraper:
 				try:
 					#for every new related algorithm detected in the scraped web page, we create a data entry in the db for the related algorithm to be queued for scraping.
 					edge_alg, created = models.Algorithm.objects.get_or_create(name=str(datum[1]), desc=str(datum[2]), url=str(datum[0]))
-					frontier_obj, _ = models.Algorithm.objects.get_or_create(url=str(datum[0]))
-					
+					frontier_obj, _ = models.Frontier.objects.get_or_create(url=str(datum[0]))
+
 					#add the related algorithm data into the list that will be used to update the graph
 					related_nodes.append(edge_alg)
 				except Exception as e:
 					print(e)
 
 			for node in related_nodes:
-				#This is a bidirectional table which we represent without risk of duplicates is alg_one and alg_two are chosen by alphabetic order.
-				if main_alg.name > node.name:
-					edge, created = models.Edge.objects.get_or_create(alg_one=main_alg, alg_two=node)
-				else:
-					edge, created = models.Edge.objects.get_or_create(alg_one=node, alg_two=main_alg)
-				#If its a new edge it has a weight of 1, otherwise we increase weight by 1
-				if created:
-					edge.save()
-				else:
-					edge.weight = edge.weight + 1
-					edge.save()
+				try:
+					#This is a bidirectional table which we represent without risk of duplicates is alg_one and alg_two are chosen by alphabetic order.
+					if main_alg.name > node.name:
+						edge, created = models.Edge.objects.get_or_create(alg_one=main_alg, alg_two=node)
+					else:
+						edge, created = models.Edge.objects.get_or_create(alg_one=node, alg_two=main_alg)
+					#If its a new edge it has a weight of 1, otherwise we increase weight by 1
+					if created:
+						edge.save()
+					else:
+						edge.weight = edge.weight + 1
+						edge.save()
+				except Exception as e:
+					print(e)
+
 		except Exception as e:
 			print(e)
 
@@ -168,10 +172,12 @@ def return_related_algs(url):
 	#Query the top 10 edges ordered by weight
 	edge_query = models.Edge.objects.filter(Q(alg_one=main_alg) | Q(alg_two=main_alg)).order_by('-weight')[:10]
 	#Get related algorithm information from the edges
-	if edge.alg_one == main_alg:
-		related_algs = [(edge.alg_one.name, edge.alg_one.desc, edge.alg_one.url) for edge in edge_query]
-	else:
-		related_algs = [(edge.alg_two.name, edge.alg_two.desc, edge.alg_two.url) for edge in edge_query]
+	related_algs = []
+	for edge in edge_query:
+		if edge.alg_one == main_alg:
+			related_algs.append((edge.alg_one.name, edge.alg_one.desc, edge.alg_one.url))
+		else:
+			related_algs.append((edge.alg_two.name, edge.alg_two.desc, edge.alg_two.url))
 
 	#We create a picture of the graph to show on the frontend and return the picture name. 
 	pic_id = create_graph(edge_query)
