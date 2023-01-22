@@ -98,7 +98,8 @@ class WebScraper:
 				try:
 					#for every new related algorithm detected in the scraped web page, we create a data entry in the db for the related algorithm to be queued for scraping.
 					edge_alg, created = models.Algorithm.objects.get_or_create(name=str(datum[1]), desc=str(datum[2]), url=str(datum[0]))
-
+					frontier_obj, _ = models.Algorithm.objects.get_or_create(url=str(datum[0]))
+					
 					#add the related algorithm data into the list that will be used to update the graph
 					related_nodes.append(edge_alg)
 				except Exception as e:
