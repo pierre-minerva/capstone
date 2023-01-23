@@ -150,7 +150,7 @@ def create_graph(edge_query):
 	#We construct the network in networkX
 	g = nx.Graph()
 	for edge in edge_query:
-		g.add_edge(edge.alg_one.name, edge.alg_two.name, weight=edge.weight)
+		g.add_edge(str(edge.alg_one.url), str(edge.alg_two.url), weight=edge.weight)
 	
 	#We draw the network
 	nx.draw(g, with_labels = True)
