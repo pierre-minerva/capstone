@@ -4,7 +4,6 @@ body {
   background-image: url('pexels-kevin-ku-577585.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
 }
 
 table, th, td {
@@ -47,4 +46,8 @@ table, th, td {
   min-height: 500px;
   display: block;
   margin: auto;
+}
+
+.img-fluid {
+  padding-bottom: 50px;
 }
