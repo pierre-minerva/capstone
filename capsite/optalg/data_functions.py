@@ -176,9 +176,9 @@ def return_related_algs(url):
 	related_algs = []
 	for edge in edge_query:
 		if edge.alg_one == main_alg:
-			related_algs.append((edge.alg_one.name, edge.alg_one.desc, edge.alg_one.url))
-		else:
 			related_algs.append((edge.alg_two.name, edge.alg_two.desc, edge.alg_two.url))
+		else:
+			related_algs.append((edge.alg_one.name, edge.alg_one.desc, edge.alg_one.url))
 
 	#We create a picture of the graph to show on the frontend and return the picture name. 
 	pic_id = create_graph(edge_query)
